@@ -47,4 +47,4 @@ jobs:
         run: kubectl apply -f aws/tvg-simple-backend-secret.yml
 
       - name: Deploy Elasticsearch
-        run: kubectl apply -f kubernetes.yml
+        run: kubectl apply -f aws/kubernetes.yml
