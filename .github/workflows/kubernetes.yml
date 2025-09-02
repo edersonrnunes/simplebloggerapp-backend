@@ -1,0 +1,85 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tvg-simple-backend
+  namespace: dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tvg-simple-backend
+  minReadySeconds: 30
+  strategy:
+    rollingUpdate:
+      maxSurge: 2
+      maxUnavailable: 1
+  template:
+    metadata:
+      labels:
+        app: tvg-simple-backend
+        environment: dev
+    spec:
+      imagePullSecrets:
+        - name: dockerhub-image-pull-secret
+      containers:
+        - name: tvg-simple-backend
+          image: edersonnunes/simplebloggerapp-backend:latest
+          env:
+            - name: MONGO_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: MONGO_PASSWORD
+                  name: tvg-simple-backend-secret
+          ports:
+            - containerPort: 3000
+          livenessProbe:
+            httpGet:
+              path: /simple-backend/health
+              port: 3000
+            initialDelaySeconds: 60
+            timeoutSeconds: 2
+            periodSeconds: 30
+            failureThreshold: 2
+          readinessProbe:
+            httpGet:
+              path: /simple-backend/health
+              port: 3000
+            initialDelaySeconds: 5
+            timeoutSeconds: 2
+            periodSeconds: 40
+            failureThreshold: 2
+          resources:
+            requests:
+              memory: "250Mi"
+              cpu: "250m"
+            limits:
+              memory: "1Gi"
+              cpu: "500m"
+          envFrom:
+            - configMapRef:
+                name: tvg-simple-backend-configmap
+            - secretRef:
+                name: tvg-simple-backend-secret
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tvg-simple-backend
+  namespace: dev
+  labels:
+    app: tvg-simple-backend
+    environment: dev
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-internal: "true"
+    service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
+spec:
+  selector:
+    app: tvg-simple-backend
+    environment: dev
+  type: NodePort
+  ports:
+    - port: 80
+      targetPort: 3000
+      protocol: TCP
+      name: http
