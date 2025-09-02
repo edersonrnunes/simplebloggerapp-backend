@@ -41,11 +41,7 @@ jobs:
         run: aws eks update-kubeconfig --name cluster-apps --region us-east-1
 
       - name: Config log in to Docker Hub
-        run: kubectl create secret docker-registry dockerhub-image-pull-secret \
-             --docker-server=https://index.docker.io/v1/ \
-             --docker-username=${{ secrets.DOCKER_USERNAME }} \
-             --docker-password=${{ secrets.DOCKER_PASSWORD }} \
-             --docker-email=edersonnunes@outlook.com
+        run: kubectl create secret docker-registry dockerhub-image-pull-secret --docker-server=https://index.docker.io/v1/ --docker-username=${{ secrets.DOCKER_USERNAME }} --docker-password=${{ secrets.DOCKER_PASSWORD }} --docker-email=edersonnunes@outlook.com
       
       - name: Deploy Elasticsearch
         run: kubectl apply -f .github/workflows/kubernetes.yaml
