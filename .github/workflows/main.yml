@@ -41,4 +41,4 @@ jobs:
         run: aws eks update-kubeconfig --name cluster-apps --region us-east-1
 
       - name: Deploy Elasticsearch
-        run: kubectl apply -f .github/workflows/kubernetes.yaml
+        run: kubectl apply -f kubernetes.yml
