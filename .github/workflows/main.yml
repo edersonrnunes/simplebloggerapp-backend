@@ -40,5 +40,11 @@ jobs:
       - name: Update Kubeconfig for EKS
         run: aws eks update-kubeconfig --name cluster-apps --region us-east-1
 
+      - name: Set configmap
+        run: kubectl apply -f aws/tvg-simple-backend-configmap.yml
+
+      - name: Set secret
+        run: kubectl apply -f aws/tvg-simple-backend-secret.yml
+
       - name: Deploy Elasticsearch
         run: kubectl apply -f kubernetes.yml
