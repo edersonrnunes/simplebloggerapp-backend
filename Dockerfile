@@ -6,6 +6,8 @@ WORKDIR /app
 COPY package*.json ./
 # Install application dependencies
 RUN npm install
+# Install MongoDB client
+RUN npm install mongodb
 # Copy the rest of your application code
 COPY . .
 # Expose the port your Node.js app listens on
