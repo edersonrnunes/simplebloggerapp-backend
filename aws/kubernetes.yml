@@ -31,19 +31,19 @@ spec:
                   key: DB_URI
                   name: tvg-simple-backend-secret
           ports:
-            - containerPort: 8000
+            - containerPort: 3000
           livenessProbe:
             httpGet:
-              path: /simple-backend/health
-              port: 8000
+              path: /health
+              port: 3000
             initialDelaySeconds: 60
             timeoutSeconds: 2
             periodSeconds: 30
             failureThreshold: 2
           readinessProbe:
             httpGet:
-              path: /simple-backend/health
-              port: 8000
+              path: /health
+              port: 3000
             initialDelaySeconds: 5
             timeoutSeconds: 2
             periodSeconds: 40
@@ -80,6 +80,6 @@ spec:
   type: NodePort
   ports:
     - port: 80
-      targetPort: 8000
+      targetPort: 3000
       protocol: TCP
       name: http

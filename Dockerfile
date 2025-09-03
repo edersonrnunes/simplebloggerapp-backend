@@ -11,6 +11,6 @@ RUN npm install mongodb
 # Copy the rest of your application code
 COPY . .
 # Expose the port your Node.js app listens on
-EXPOSE 8000
+EXPOSE 3000
 # Command to run your application
 CMD ["node", "server.js"]
