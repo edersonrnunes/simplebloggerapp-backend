@@ -25,10 +25,10 @@ spec:
         - name: tvg-simple-backend
           image: edersonnunes/simplebloggerapp-backend:latest
           env:
-            - name: MONGO_PASSWORD
+            - name: DB_URI
               valueFrom:
                 secretKeyRef:
-                  key: MONGO_PASSWORD
+                  key: DB_URI
                   name: tvg-simple-backend-secret
           ports:
             - containerPort: 3000
