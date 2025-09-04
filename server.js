@@ -28,14 +28,14 @@ app.use(express.static(path.join(__dirname, "public")));
 dataBaseConnection();
 
 //Test Route
-app.get("/", async (req, res) => {
+app.get("/simple-backend", async (req, res) => {
   return res
     .status(200)
     .send("API of Aspire Kaleidoscope... A Simple Blogger App Backend");
 });
 
 //Test Route
-app.get("/health", async (req, res) => {
+app.get("/simple-backend/health", async (req, res) => {
   return res
     .status(200)
     .send("Health Check OK");
