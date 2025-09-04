@@ -1,19 +1,5 @@
 import { Story } from "../models/story.js";
 
-export const getHealthCheck = (req, res) => {
-  const healthcheck = {
-    uptime: process.uptime(),
-    message: "OK",
-    timestamp: Date.now(),
-  };
-  try {
-    res.send(healthcheck);
-  } catch (error) {
-    healthcheck.message = error.message;
-    res.status(503).send(healthcheck);
-  }
-}
-
 export const addStory = async (req, res) => {
   try {
     // Validate that required fields (e.g., title and content) are present in the request body

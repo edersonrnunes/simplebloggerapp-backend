@@ -34,6 +34,13 @@ app.get("/", async (req, res) => {
     .send("API of Aspire Kaleidoscope... A Simple Blogger App Backend");
 });
 
+//Test Route
+app.get("/health", async (req, res) => {
+  return res
+    .status(200)
+    .send("Health Check OK");
+});
+
 //Routes
 app.use("/api", indexRoutes);
 
