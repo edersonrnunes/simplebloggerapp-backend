@@ -42,7 +42,7 @@ app.get("/simple-backend/health", async (req, res) => {
 });
 
 //Routes
-app.use("/api", indexRoutes);
+app.use("/simple-backend/api", indexRoutes);
 
 //Listening the Server
 app.listen(PORT, () => {
