@@ -1,4 +1,4 @@
-name: Publicando Imagem Docker no Docker Hub
+name: Pipeline Simple Blogger App
 
 on:
   push:
@@ -11,7 +11,6 @@ permissions:
   pull-requests: read # allows SonarCloud to decorate PRs with analysis results
 
 jobs:
-  
   Analysis:
     runs-on: ubuntu-latest
     steps:
@@ -27,8 +26,8 @@ jobs:
           projectBaseDir: .
 
   security:
-    needs: build-and-push
-    name: Analyze
+    needs: Analysis
+    name: Analyze with CodeQL
     runs-on: ubuntu-latest
     permissions:
       security-events: write
@@ -40,12 +39,15 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+      
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v3
         with:
           languages: ${{ matrix.language }}
+      
       - name: Autobuild
         uses: github/codeql-action/autobuild@v3
+
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
 
