@@ -54,7 +54,8 @@ jobs:
           # When you need the analysis to take place in a directory other than the one from which it was launched, default is .
           projectBaseDir: .
 
-  mobile-security:
+  security:
+    needs: Analysis
     permissions:
       contents: read # for actions/checkout to fetch code
       security-events: write # for github/codeql-action/upload-sarif to upload SARIF results
@@ -62,6 +63,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - name: Create results directory if missing
+        run: mkdir -p ../results
 
       - name: Setup python
         uses: actions/setup-python@v3
@@ -77,7 +81,7 @@ jobs:
         uses: github/codeql-action/upload-sarif@v3
 
   deploy:
-    needs: Analysis
+    needs: security
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
