@@ -32,6 +32,10 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
+    - name: Substituir o Secret banco
+      run: |
+          sed -i "s/{{DB_URI}}/$${{ secrets.DB_URI }}/g" aws/tvg-simple-backend-secret.yml
+
     - name: Log in to Docker Hub
       uses: docker/login-action@v3
       with:
