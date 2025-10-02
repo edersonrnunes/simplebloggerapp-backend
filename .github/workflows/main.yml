@@ -65,8 +65,8 @@ jobs:
 #      - name: Set configmap
 #        run: kubectl apply -f aws/tvg-simple-backend-configmap.yml
 
-      - name: Set secret
-        run: kubectl apply -f aws/tvg-simple-backend-secret.yml
+#      - name: Set secret
+#        run: kubectl apply -f aws/tvg-simple-backend-secret.yml
 
-      - name: Deploy Elasticsearch
-        run: kubectl apply -f aws/kubernetes.yml
+#      - name: Deploy Elasticsearch
+#        run: kubectl apply -f aws/kubernetes.yml
