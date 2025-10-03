@@ -92,13 +92,39 @@ export const editStory = async (req, res) => {
     // Get the updated story data from the request body
     const { title, summary, content, image } = req.body;
 
-    // Find the story by ID and update its properties
-    const updatedStory = await Story.findByIdAndUpdate(storyId, {
-      title,
-      summary,
-      content,
-      image,
-    });
+    // Validate input types to prevent NoSQL injection
+    const fieldsToUpdate = {};
+    if (title !== undefined) {
+      if (typeof title !== "string") {
+        return res.status(400).json({ error: "Invalid type for title" });
+      }
+      fieldsToUpdate.title = title;
+    }
+    if (summary !== undefined) {
+      if (typeof summary !== "string") {
+        return res.status(400).json({ error: "Invalid type for summary" });
+      }
+      fieldsToUpdate.summary = summary;
+    }
+    if (content !== undefined) {
+      if (typeof content !== "string") {
+        return res.status(400).json({ error: "Invalid type for content" });
+      }
+      fieldsToUpdate.content = content;
+    }
+    if (image !== undefined) {
+      if (typeof image !== "string") {
+        return res.status(400).json({ error: "Invalid type for image" });
+      }
+      fieldsToUpdate.image = image;
+    }
+
+    // Find the story by ID and update its properties, using $set to prevent operator injection
+    const updatedStory = await Story.findByIdAndUpdate(
+      storyId,
+      { $set: fieldsToUpdate },
+      { new: true }
+    );
 
     if (!updatedStory) {
       return res.status(404).json({
