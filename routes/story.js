@@ -15,10 +15,19 @@ const deleteLimiter = rateLimit({
   legacyHeaders: false, // Disable the `X-RateLimit-*` headers
 });
 
+// Rate limiter: allow max 10 edits per minute per IP
+const editLimiter = rateLimit({
+  windowMs: 60 * 1000, // 1 minute
+  max: 10,
+  message: "Too many edit requests from this IP, please try again later.",
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
 router.post("/addstory", protectRoute, addStory);
 router.get("/getAllStories", getAllStories);
 router.get("/:id", protectRoute, getStoryById);
-router.put("/:id", protectRoute, editStory);
+router.put("/:id", protectRoute, editLimiter, editStory);
 router.delete("/:id", protectRoute, deleteLimiter, deleteStory);
 
 export const storyRouter = router;
