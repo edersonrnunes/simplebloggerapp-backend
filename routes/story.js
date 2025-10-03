@@ -34,7 +34,7 @@ const readLimiter = rateLimit({
 });
 
 router.post("/addstory", protectRoute, addStory);
-router.get("/getAllStories", getAllStories);
+router.get("/getAllStories", readLimiter, getAllStories);
 router.get("/:id", protectRoute, readLimiter, getStoryById);
 router.put("/:id", protectRoute, editLimiter, editStory);
 router.delete("/:id", protectRoute, deleteLimiter, deleteStory);
