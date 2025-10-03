@@ -24,9 +24,18 @@ const editLimiter = rateLimit({
   legacyHeaders: false,
 });
 
+// Rate limiter: allow max 100 reads per 15 minutes per IP
+const readLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100,
+  message: "Too many requests for stories from this IP, please try again later.",
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
 router.post("/addstory", protectRoute, addStory);
 router.get("/getAllStories", getAllStories);
-router.get("/:id", protectRoute, getStoryById);
+router.get("/:id", protectRoute, readLimiter, getStoryById);
 router.put("/:id", protectRoute, editLimiter, editStory);
 router.delete("/:id", protectRoute, deleteLimiter, deleteStory);
 
